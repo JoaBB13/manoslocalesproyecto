@@ -27,6 +27,9 @@
 
         <activity android:name=".HomeActivity" />
 
+        <activity android:name=".PerfilActivity" />
+
+
 
         <activity
             android:name=".MainActivity"

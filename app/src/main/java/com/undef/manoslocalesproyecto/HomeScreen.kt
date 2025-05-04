@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 
+
 data class Vendedor(
     val id: Int,
     val nombre: String,
@@ -41,16 +42,40 @@ fun HomeScreen(vendedores: List<Vendedor>) {
     }
 }
 
+
+
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    val vendedoresDeEjemplo = listOf(
-        Vendedor(1, "Ana Mercado", "Panadería", "Productos artesanales hechos."),
-        Vendedor(2, "Carlos Huerta", "Verduras", "Huerta agroecológica fresca."),
-        Vendedor(3, "Lucía Artesanías", "Artesanías", "Tejidos y decoraciones regionales.")
+    val rubros = listOf("Panadería", "Verduras", "Artesanías", "Frutas", "Lácteos", "Conservas")
+    val descripciones = listOf(
+        "Productos artesanales hechos en casa.",
+        "Huerta agroecológica fresca.",
+        "Tejidos y decoraciones regionales.",
+        "Frutas de estación recién cosechadas.",
+        "Lácteos frescos de producción local.",
+        "Conservas caseras sin aditivos."
     )
+    val nombres = listOf(
+        "Ana Mercado", "Carlos Huerta", "Lucía Artesanías", "Pedro Frutos",
+        "Sofía Dulces", "Martín Hortaliza", "Elena Pan", "Juan Queso",
+        "Rosa Tejidos", "Luis Frutas", "Marta Sazón", "Diego Campo",
+        "Paula Feria", "Nico Agro", "Carla Artesana", "Esteban Panadero",
+        "Laura Eco", "Marcos Mercado", "Cecilia Orgánica", "Damián Verde"
+    )
+
+    val vendedoresDeEjemplo = List(20) { index ->
+        Vendedor(
+            id = index + 1,
+            nombre = nombres[index % nombres.size],
+            rubro = rubros[index % rubros.size],
+            descripcion = descripciones[index % descripciones.size]
+        )
+    }
 
     ManoslocalesproyectoTheme {
         HomeScreen(vendedores = vendedoresDeEjemplo)
     }
 }
+
