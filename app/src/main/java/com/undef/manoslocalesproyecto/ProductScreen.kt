@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.*
 
 // ✅ Acá va el data class Producto
 data class Producto(
@@ -21,30 +22,67 @@ data class Producto(
     val vendedor: String
 )
 
+
 @Composable
 fun ProductScreen(productos: List<Producto>) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        items(productos) { producto ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
-                    Text("Categoría: ${producto.categoria}", style = MaterialTheme.typography.bodyMedium)
-                    Text("Ciudad: ${producto.ciudad}", style = MaterialTheme.typography.bodySmall)
-                    Text("Vendedor: ${producto.vendedor}", style = MaterialTheme.typography.bodySmall)
+    var query by remember { mutableStateOf("") }
+    var buscando by remember { mutableStateOf(false) }
+
+    val resultadosBusqueda = productos.filter {
+        val texto = query.lowercase()
+        it.nombre.lowercase().contains(texto) ||
+                it.categoria.lowercase().contains(texto) ||
+                it.ciudad.lowercase().contains(texto) ||
+                it.vendedor.lowercase().contains(texto)
+    }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+
+        // 🟦 Campo de búsqueda
+        OutlinedTextField(
+            value = query,
+            onValueChange = {
+                query = it
+                buscando = it.isNotBlank()
+            },
+            label = { Text("Buscar por categoría, ciudad o vendedor") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            singleLine = true
+        )
+
+        // 🟪 Título de la sección
+        Text(
+            text = if (buscando) "Resultados de búsqueda" else "Todos los productos",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        // 🟩 Lista (filtrada o completa según el caso)
+        LazyColumn {
+            val lista = if (buscando) resultadosBusqueda else productos
+            items(lista) { producto ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
+                        Text("Categoría: ${producto.categoria}", style = MaterialTheme.typography.bodyMedium)
+                        Text("Ciudad: ${producto.ciudad}", style = MaterialTheme.typography.bodySmall)
+                        Text("Vendedor: ${producto.vendedor}", style = MaterialTheme.typography.bodySmall)
+                    }
                 }
             }
         }
     }
 }
+
+
+
 
 
 

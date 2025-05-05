@@ -59,16 +59,20 @@ fun LoginScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        val context = LocalContext.current
+
         Button(
             onClick = {
-                // Lógica de validación o navegación
+                // Aquí podrías validar credenciales si hicieras login real
+
+                // Navegar a ProductActivity
+                val intent = Intent(context, ProductActivity::class.java)
+                context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ingresar")
         }
-
-        val context = LocalContext.current
 
         TextButton(
             onClick = {
