@@ -11,6 +11,18 @@ import androidx.compose.ui.unit.dp
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
+
+
+
 
 // ✅ Acá va el data class Producto
 data class Producto(
@@ -25,8 +37,12 @@ data class Producto(
 
 @Composable
 fun ProductScreen(productos: List<Producto>) {
+    val context = LocalContext.current
+
     var query by remember { mutableStateOf("") }
     var buscando by remember { mutableStateOf(false) }
+
+    var menuExpanded by remember { mutableStateOf(false) }
 
     val resultadosBusqueda = productos.filter {
         val texto = query.lowercase()
@@ -38,28 +54,83 @@ fun ProductScreen(productos: List<Producto>) {
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
-        // 🟦 Campo de búsqueda
-        OutlinedTextField(
-            value = query,
-            onValueChange = {
-                query = it
-                buscando = it.isNotBlank()
-            },
-            label = { Text("Buscar por categoría, ciudad o vendedor") },
+        // 🔷 Fila de búsqueda + botón de menú
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            singleLine = true
-        )
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = {
+                    query = it
+                    buscando = it.isNotBlank()
+                },
+                label = { Text("Buscar por categoría, ciudad o vendedor") },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                singleLine = true
+            )
 
-        // 🟪 Título de la sección
+            Box {
+                IconButton(onClick = { menuExpanded = true }) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "Menú")
+                }
+
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Mi Perfil") },
+                        onClick = {
+                            menuExpanded = false
+                            context.startActivity(Intent(context, PerfilActivity::class.java))
+                            // TODO: navegar a perfil
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Favoritos") },
+                        onClick = {
+                            menuExpanded = false
+                            // TODO: navegar a favoritos
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Configuración") },
+                        onClick = {
+                            menuExpanded = false
+                            // TODO: navegar a configuración
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Consultas") },
+                        onClick = {
+                            menuExpanded = false
+                            // TODO: navegar a consultas
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Alertas") },
+                        onClick = {
+                            menuExpanded = false
+                            // TODO: navegar a alertas
+                        }
+                    )
+                }
+            }
+        }
+
+        // 🔶 Título
         Text(
             text = if (buscando) "Resultados de búsqueda" else "Todos los productos",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
-        // 🟩 Lista (filtrada o completa según el caso)
+        // 🔸 Lista de productos
         LazyColumn {
             val lista = if (buscando) resultadosBusqueda else productos
             items(lista) { producto ->
@@ -80,6 +151,7 @@ fun ProductScreen(productos: List<Producto>) {
         }
     }
 }
+
 
 
 

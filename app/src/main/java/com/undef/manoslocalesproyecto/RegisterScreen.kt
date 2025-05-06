@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -73,13 +75,17 @@ fun RegisterScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        val context = LocalContext.current
+
         Button(
             onClick = {
-                // Aquí iría la lógica de validación o registro
+                // 👉 Redirige a LoginActivity
+                val intent = Intent(context, LoginActivity::class.java)
+                context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Registrarse")
+            Text("Registrar")
         }
     }
 }

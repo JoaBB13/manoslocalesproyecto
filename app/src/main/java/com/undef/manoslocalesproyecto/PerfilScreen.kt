@@ -8,6 +8,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun PerfilScreen(
@@ -47,9 +49,13 @@ fun PerfilScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        val context = LocalContext.current
+
         Button(
             onClick = {
                 onGuardar(nombre, email)
+                val intent = Intent(context, ProductActivity::class.java)
+                context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
