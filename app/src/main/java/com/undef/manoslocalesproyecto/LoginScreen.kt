@@ -80,7 +80,16 @@ fun LoginScreen() {
                 context.startActivity(intent)
             }
         ) {
-            Text("¿No tenés cuenta? Registrate")
+            Text("¿No tenés cuenta? Registrate aqui")
+        }
+
+        TextButton(
+            onClick = {
+                val intent = Intent(context, PasswordActivity::class.java)
+                context.startActivity(intent)
+            }
+        ) {
+            Text("¿Olvidaste tu contraseña? Cambiala aqui")
         }
     }
 }
