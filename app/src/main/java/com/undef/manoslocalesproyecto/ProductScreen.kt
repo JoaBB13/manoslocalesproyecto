@@ -1,30 +1,23 @@
-// ProductScreen.kt
 package com.undef.manoslocalesproyecto
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.runtime.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import android.content.Intent
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 
-
-
-
-// ✅ Acá va el data class Producto
+// ✅ Data class del producto
 data class Producto(
     val id: Int,
     val nombre: String,
@@ -34,15 +27,16 @@ data class Producto(
     val vendedor: String
 )
 
-
 @Composable
 fun ProductScreen(productos: List<Producto>) {
     val context = LocalContext.current
 
     var query by remember { mutableStateOf("") }
     var buscando by remember { mutableStateOf(false) }
-
     var menuExpanded by remember { mutableStateOf(false) }
+
+    // ⭐ IDs de productos favoritos
+    var favoritos by remember { mutableStateOf(setOf<Int>()) }
 
     val resultadosBusqueda = productos.filter {
         val texto = query.lowercase()
@@ -54,12 +48,13 @@ fun ProductScreen(productos: List<Producto>) {
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
-        // 🔷 Fila de búsqueda + botón de menú
+        // 🔷 Buscador y menú
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
                 value = query,
@@ -88,35 +83,34 @@ fun ProductScreen(productos: List<Producto>) {
                         onClick = {
                             menuExpanded = false
                             context.startActivity(Intent(context, PerfilActivity::class.java))
-                            // TODO: navegar a perfil
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Favoritos") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: navegar a favoritos
+                            context.startActivity(Intent(context, FavoriteActivity::class.java))
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Configuración") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: navegar a configuración
+                            // TODO: configuración
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Consultas") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: navegar a consultas
+                            // TODO: consultas
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Alertas") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: navegar a alertas
+                            // TODO: alertas
                         }
                     )
                 }
@@ -134,29 +128,44 @@ fun ProductScreen(productos: List<Producto>) {
         LazyColumn {
             val lista = if (buscando) resultadosBusqueda else productos
             items(lista) { producto ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
-                        Text("Categoría: ${producto.categoria}", style = MaterialTheme.typography.bodyMedium)
-                        Text("Ciudad: ${producto.ciudad}", style = MaterialTheme.typography.bodySmall)
-                        Text("Vendedor: ${producto.vendedor}", style = MaterialTheme.typography.bodySmall)
+                Box(modifier = Modifier.padding(vertical = 8.dp)) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
+                            Text("Categoría: ${producto.categoria}", style = MaterialTheme.typography.bodyMedium)
+                            Text("Ciudad: ${producto.ciudad}", style = MaterialTheme.typography.bodySmall)
+                            Text("Vendedor: ${producto.vendedor}", style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+
+                    // 🌟 Botón de favorito en la esquina superior derecha
+                    IconButton(
+                        onClick = {
+                            favoritos = if (favoritos.contains(producto.id)) {
+                                favoritos - producto.id
+                            } else {
+                                favoritos + producto.id
+                            }
+                        },
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (favoritos.contains(producto.id)) Icons.Filled.Star else Icons.Filled.StarBorder,
+                            contentDescription = "Favorito",
+                            tint = if (favoritos.contains(producto.id)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        )
                     }
                 }
             }
         }
     }
 }
-
-
-
-
-
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
