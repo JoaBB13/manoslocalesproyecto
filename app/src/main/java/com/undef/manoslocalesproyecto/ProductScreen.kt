@@ -36,7 +36,8 @@ fun ProductScreen(productos: List<Producto>) {
     var menuExpanded by remember { mutableStateOf(false) }
 
     // ⭐ IDs de productos favoritos
-    var favoritos by remember { mutableStateOf(setOf<Int>()) }
+    var favoritos by remember { mutableStateOf(ProductoFavoritos.favoritos.map { it.id }.toSet()) }
+
 
     val resultadosBusqueda = productos.filter {
         val texto = query.lowercase()
@@ -145,10 +146,16 @@ fun ProductScreen(productos: List<Producto>) {
                     // 🌟 Botón de favorito en la esquina superior derecha
                     IconButton(
                         onClick = {
-                            favoritos = if (favoritos.contains(producto.id)) {
-                                favoritos - producto.id
+                            if (favoritos.contains(producto.id)) {
+                                // 🔻 Quitar de favoritos
+                                ProductoFavoritos.favoritos.removeAll { it.id == producto.id }
+                                favoritos = favoritos - producto.id
                             } else {
-                                favoritos + producto.id
+                                // 🔺 Agregar solo si no existe ya
+                                if (ProductoFavoritos.favoritos.none { it.id == producto.id }) {
+                                    ProductoFavoritos.favoritos.add(producto)
+                                }
+                                favoritos = favoritos + producto.id
                             }
                         },
                         modifier = Modifier
@@ -161,6 +168,7 @@ fun ProductScreen(productos: List<Producto>) {
                             tint = if (favoritos.contains(producto.id)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                         )
                     }
+
                 }
             }
         }

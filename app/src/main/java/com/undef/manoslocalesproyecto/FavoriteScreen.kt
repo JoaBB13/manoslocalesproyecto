@@ -22,9 +22,8 @@ import com.undef.manoslocalesproyecto.R
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 
 @Composable
-fun FavoriteScreen() {
+fun FavoriteScreen(favoritos: List<Producto>) {
     val context = LocalContext.current
-    val favoritos = ProductoFavoritos.favoritos
 
     Column(modifier = Modifier
         .fillMaxSize()
