@@ -20,16 +20,20 @@ import com.undef.manoslocalesproyecto.Producto
 import com.undef.manoslocalesproyecto.ProductoFavoritos
 import com.undef.manoslocalesproyecto.R
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
+import androidx.compose.foundation.clickable
 
 @Composable
-fun FavoriteScreen(favoritos: List<Producto>) {
+fun FavoriteScreen(
+    favoritos: List<Producto>,
+    onProductClick: (Int) -> Unit
+) {
     val context = LocalContext.current
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-
-        // 🔙 Flecha para ir a ProductActivity
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -60,7 +64,8 @@ fun FavoriteScreen(favoritos: List<Producto>) {
                     Card(
                         modifier = Modifier
                             .width(250.dp)
-                            .height(150.dp),
+                            .height(150.dp)
+                            .clickable { onProductClick(producto.id) }, // 👉 click aquí
                         elevation = CardDefaults.cardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
@@ -76,6 +81,7 @@ fun FavoriteScreen(favoritos: List<Producto>) {
         }
     }
 }
+
 
 
 

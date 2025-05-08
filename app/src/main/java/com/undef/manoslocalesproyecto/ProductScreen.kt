@@ -1,6 +1,7 @@
 package com.undef.manoslocalesproyecto
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,29 +16,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import com.undef.manoslocalesproyecto.FavoriteActivity
+import com.undef.manoslocalesproyecto.PerfilActivity
+import com.undef.manoslocalesproyecto.ProductoFavoritos
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 
-// ✅ Data class del producto
 data class Producto(
     val id: Int,
     val nombre: String,
     val categoria: String,
     val descripcion: String,
     val ciudad: String,
-    val vendedor: String
+    val vendedor: String,
+    val stock: Int,
+    val fechaPublicacion: String
 )
 
 @Composable
-fun ProductScreen(productos: List<Producto>) {
+fun ProductScreen(
+    productos: List<Producto>,
+    onProductClick: (Int) -> Unit
+) {
     val context = LocalContext.current
 
     var query by remember { mutableStateOf("") }
     var buscando by remember { mutableStateOf(false) }
     var menuExpanded by remember { mutableStateOf(false) }
-
-    // ⭐ IDs de productos favoritos
     var favoritos by remember { mutableStateOf(ProductoFavoritos.favoritos.map { it.id }.toSet()) }
-
 
     val resultadosBusqueda = productos.filter {
         val texto = query.lowercase()
@@ -49,7 +54,7 @@ fun ProductScreen(productos: List<Producto>) {
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
-        // 🔷 Buscador y menú
+        // Buscador y menú
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -118,21 +123,24 @@ fun ProductScreen(productos: List<Producto>) {
             }
         }
 
-        // 🔶 Título
+        // Título
         Text(
             text = if (buscando) "Resultados de búsqueda" else "Todos los productos",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
-        // 🔸 Lista de productos
+        // Lista de productos
         LazyColumn {
             val lista = if (buscando) resultadosBusqueda else productos
             items(lista) { producto ->
                 Box(modifier = Modifier.padding(vertical = 8.dp)) {
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .clickable {
+                                onProductClick(producto.id)
+                            },
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -143,15 +151,13 @@ fun ProductScreen(productos: List<Producto>) {
                         }
                     }
 
-                    // 🌟 Botón de favorito en la esquina superior derecha
+                    // Botón de favorito
                     IconButton(
                         onClick = {
                             if (favoritos.contains(producto.id)) {
-                                // 🔻 Quitar de favoritos
                                 ProductoFavoritos.favoritos.removeAll { it.id == producto.id }
                                 favoritos = favoritos - producto.id
                             } else {
-                                // 🔺 Agregar solo si no existe ya
                                 if (ProductoFavoritos.favoritos.none { it.id == producto.id }) {
                                     ProductoFavoritos.favoritos.add(producto)
                                 }
@@ -168,14 +174,15 @@ fun ProductScreen(productos: List<Producto>) {
                             tint = if (favoritos.contains(producto.id)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                         )
                     }
-
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+
+
+/*@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProductScreenPreview() {
     val productosEjemplo = listOf(
@@ -205,4 +212,4 @@ fun ProductScreenPreview() {
         ProductScreen(productos = productosEjemplo)
     }
 }
-
+*/
