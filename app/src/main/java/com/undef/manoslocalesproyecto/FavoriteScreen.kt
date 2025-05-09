@@ -1,26 +1,21 @@
 package com.undef.manoslocalesproyecto
 
 import android.content.Intent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import com.undef.manoslocalesproyecto.Producto
-import com.undef.manoslocalesproyecto.ProductoFavoritos
-import com.undef.manoslocalesproyecto.R
-import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun FavoriteScreen(
@@ -28,6 +23,7 @@ fun FavoriteScreen(
     onProductClick: (Int) -> Unit
 ) {
     val context = LocalContext.current
+    var actualizacion by remember { mutableStateOf(0) } // fuerza recomposición
 
     Column(
         modifier = Modifier
@@ -64,16 +60,40 @@ fun FavoriteScreen(
                     Card(
                         modifier = Modifier
                             .width(250.dp)
-                            .height(150.dp)
-                            .clickable { onProductClick(producto.id) }, // 👉 click aquí
+                            .height(180.dp)
+                            .clickable { onProductClick(producto.id) },
                         elevation = CardDefaults.cardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
-                            Text("Categoría: ${producto.categoria}", style = MaterialTheme.typography.bodySmall)
-                            Text("Ciudad: ${producto.ciudad}", style = MaterialTheme.typography.bodySmall)
-                            Text("Vendedor: ${producto.vendedor}", style = MaterialTheme.typography.bodySmall)
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .align(Alignment.TopStart)
+                            ) {
+                                Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
+                                Text("Categoría: ${producto.categoria}", style = MaterialTheme.typography.bodySmall)
+                                Text("Ciudad: ${producto.ciudad}", style = MaterialTheme.typography.bodySmall)
+                                Text("Vendedor: ${producto.vendedor}", style = MaterialTheme.typography.bodySmall)
+                            }
+
+                            IconButton(
+                                onClick = {
+                                    if (ProductoFavoritos.tieneAlerta(producto.id)) {
+                                        ProductoFavoritos.desactivarAlerta(producto.id)
+                                    } else {
+                                        ProductoFavoritos.activarAlerta(producto.id)
+                                    }
+                                    actualizacion++ // fuerza recomposición
+                                },
+                                modifier = Modifier.align(Alignment.TopEnd)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Notifications,
+                                    contentDescription = "Activar/Desactivar alerta",
+                                    tint = if (ProductoFavoritos.tieneAlerta(producto.id)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                                )
+                            }
                         }
                     }
                 }
@@ -81,6 +101,7 @@ fun FavoriteScreen(
         }
     }
 }
+
 
 
 

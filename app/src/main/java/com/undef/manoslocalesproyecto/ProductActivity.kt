@@ -46,7 +46,8 @@ class ProductActivity : ComponentActivity() {
                             productos = productosDeEjemplo,
                             onProductClick = { id ->
                                 navController.navigate("detail/$id")
-                            }
+                            },
+                            onAlertsClick = { navController.navigate("alerts") }
                         )
                     }
                     composable(
@@ -60,6 +61,10 @@ class ProductActivity : ComponentActivity() {
                             onBack = { navController.popBackStack() }
                         )
                     }
+                    composable("alerts") {
+                        AlertScreen(onBack = { navController.popBackStack() })
+                    }
+
                 }
             }
         }

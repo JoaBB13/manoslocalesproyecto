@@ -15,11 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import com.undef.manoslocalesproyecto.FavoriteActivity
 import com.undef.manoslocalesproyecto.PerfilActivity
 import com.undef.manoslocalesproyecto.ProductoFavoritos
-import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 
 data class Producto(
     val id: Int,
@@ -35,10 +34,10 @@ data class Producto(
 @Composable
 fun ProductScreen(
     productos: List<Producto>,
-    onProductClick: (Int) -> Unit
+    onProductClick: (Int) -> Unit,
+    onAlertsClick: () -> Unit//mejor usar on click antes que navcontroller
 ) {
     val context = LocalContext.current
-
     var query by remember { mutableStateOf("") }
     var buscando by remember { mutableStateOf(false) }
     var menuExpanded by remember { mutableStateOf(false) }
@@ -53,8 +52,6 @@ fun ProductScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-
-        // Buscador y menú
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,35 +99,31 @@ fun ProductScreen(
                         text = { Text("Configuración") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: configuración
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Consultas") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: consultas
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Alertas") },
                         onClick = {
                             menuExpanded = false
-                            // TODO: alertas
+                            onAlertsClick()//esto en vez de un navcontroller es mejor
                         }
                     )
                 }
             }
         }
 
-        // Título
         Text(
             text = if (buscando) "Resultados de búsqueda" else "Todos los productos",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
-        // Lista de productos
         LazyColumn {
             val lista = if (buscando) resultadosBusqueda else productos
             items(lista) { producto ->
@@ -138,9 +131,7 @@ fun ProductScreen(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                onProductClick(producto.id)
-                            },
+                            .clickable { onProductClick(producto.id) },
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -151,7 +142,6 @@ fun ProductScreen(
                         }
                     }
 
-                    // Botón de favorito
                     IconButton(
                         onClick = {
                             if (favoritos.contains(producto.id)) {
@@ -179,6 +169,7 @@ fun ProductScreen(
         }
     }
 }
+
 
 
 
