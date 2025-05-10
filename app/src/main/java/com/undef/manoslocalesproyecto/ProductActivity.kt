@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
+import androidx.compose.ui.platform.LocalContext
 
 class ProductActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +48,9 @@ class ProductActivity : ComponentActivity() {
                             onProductClick = { id ->
                                 navController.navigate("detail/$id")
                             },
-                            onAlertsClick = { navController.navigate("alerts") }
+                            onAlertsClick = { navController.navigate("alerts") },
+                            onSettingsClick = { navController.navigate("settings") },
+                            onConsultasClick = { navController.navigate("questions") }
                         )
                     }
                     composable(
@@ -64,6 +67,19 @@ class ProductActivity : ComponentActivity() {
                     composable("alerts") {
                         AlertScreen(onBack = { navController.popBackStack() })
                     }
+                    composable("settings") {
+                        val context = LocalContext.current
+                        SettingsScreen(
+                            context = context,  // <- Pasa el contexto
+                            onBack = { navController.popBackStack() }
+                        )
+                    }
+                    composable("questions") {
+                        QuestionsScreen(
+                            onBack = { navController.popBackStack() }
+                        )
+                    }
+
 
                 }
             }

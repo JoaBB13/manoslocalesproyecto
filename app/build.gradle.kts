@@ -68,6 +68,16 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation ("androidx.compose.material:material-icons-extended")
     implementation ("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.compose.ui:ui:1.6.0") // o tu versión
+    implementation ("androidx.activity:activity-compose:1.8.0")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.30.1")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+
+
 
 
 }

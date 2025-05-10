@@ -25,6 +25,8 @@
 
         <activity android:name=".RegisterActivity" />
 
+        <activity android:name=".PasswordActivity" />
+
         <activity android:name=".ProductActivity" />
 
         <activity android:name=".PerfilActivity" />

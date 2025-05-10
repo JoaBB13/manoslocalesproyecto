@@ -15,10 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.undef.manoslocalesproyecto.FavoriteActivity
-import com.undef.manoslocalesproyecto.PerfilActivity
-import com.undef.manoslocalesproyecto.ProductoFavoritos
+import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 data class Producto(
     val id: Int,
@@ -35,20 +34,40 @@ data class Producto(
 fun ProductScreen(
     productos: List<Producto>,
     onProductClick: (Int) -> Unit,
-    onAlertsClick: () -> Unit//mejor usar on click antes que navcontroller
+    onAlertsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onConsultasClick: () -> Unit,
 ) {
+    //val sharedViewModel: SharedAppViewModel = viewModel()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val userPreferences = remember { UserPreferences(context) }
+
     var query by remember { mutableStateOf("") }
     var buscando by remember { mutableStateOf(false) }
     var menuExpanded by remember { mutableStateOf(false) }
     var favoritos by remember { mutableStateOf(ProductoFavoritos.favoritos.map { it.id }.toSet()) }
+    var filtroGuardado by remember { mutableStateOf("todos") }
+
+    // Observar el valor de filtro desde DataStore
+    val filtroFlow by userPreferences.busquedaPor.collectAsState(initial = "todos")
+    LaunchedEffect(filtroFlow) {
+        filtroGuardado = filtroFlow
+    }
 
     val resultadosBusqueda = productos.filter {
         val texto = query.lowercase()
-        it.nombre.lowercase().contains(texto) ||
-                it.categoria.lowercase().contains(texto) ||
-                it.ciudad.lowercase().contains(texto) ||
-                it.vendedor.lowercase().contains(texto)
+        when (filtroGuardado) {
+            "ciudad" -> it.ciudad.lowercase().contains(texto)
+            "categoria" -> it.categoria.lowercase().contains(texto)
+            "vendedor" -> it.vendedor.lowercase().contains(texto)
+            else -> {
+                it.nombre.lowercase().contains(texto) ||
+                        it.categoria.lowercase().contains(texto) ||
+                        it.ciudad.lowercase().contains(texto) ||
+                        it.vendedor.lowercase().contains(texto)
+            }
+        }
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -65,7 +84,7 @@ fun ProductScreen(
                     query = it
                     buscando = it.isNotBlank()
                 },
-                label = { Text("Buscar por categoría, ciudad o vendedor") },
+                label = { Text("Buscar por $filtroGuardado") },
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp),
@@ -99,19 +118,21 @@ fun ProductScreen(
                         text = { Text("Configuración") },
                         onClick = {
                             menuExpanded = false
+                            onSettingsClick()
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Consultas") },
                         onClick = {
                             menuExpanded = false
+                            onConsultasClick()
                         }
                     )
                     DropdownMenuItem(
                         text = { Text("Alertas") },
                         onClick = {
                             menuExpanded = false
-                            onAlertsClick()//esto en vez de un navcontroller es mejor
+                            onAlertsClick()
                         }
                     )
                 }
@@ -169,7 +190,6 @@ fun ProductScreen(
         }
     }
 }
-
 
 
 
