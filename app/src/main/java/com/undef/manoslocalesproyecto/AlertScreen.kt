@@ -3,11 +3,14 @@ package com.undef.manoslocalesproyecto
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertScreen(onBack: () -> Unit) {
     // Estado para recomponer la pantalla cuando se desactivan alertas
@@ -21,6 +24,14 @@ fun AlertScreen(onBack: () -> Unit) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
+        TopAppBar(
+            title = { Text("Alertas") },
+            navigationIcon = {
+                IconButton(onClick = { onBack() }) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                }
+            }
+        )
 
         Text("Alertas activas", style = MaterialTheme.typography.titleLarge)
 
@@ -54,10 +65,7 @@ fun AlertScreen(onBack: () -> Unit) {
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onBack) {
-            Text("Volver")
-        }
+
     }
 }
 

@@ -9,16 +9,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import com.undef.manoslocalesproyecto.ui.theme.ManoslocalesproyectoTheme
 import android.content.Intent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.platform.LocalContext
 
+@OptIn(ExperimentalMaterial3Api::class)//me permite usar TopAPPBar
 @Composable
 fun PerfilScreen(
     nombreInicial: String,
     emailInicial: String,
     onGuardar: (String, String) -> Unit
 ) {
+    val context = LocalContext.current
     var nombre by remember { mutableStateOf(nombreInicial) }
     var email by remember { mutableStateOf(emailInicial) }
+
+
+    TopAppBar(
+        title = { Text("") },
+        navigationIcon = {
+            IconButton(onClick = {
+                val intent = Intent(context, LoginActivity::class.java)
+                context.startActivity(intent)
+            }) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+            }
+        }
+    )
 
     Column(
         modifier = Modifier

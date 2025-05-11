@@ -10,15 +10,31 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import android.content.Intent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.platform.LocalContext
 
+@OptIn(ExperimentalMaterial3Api::class)//me permite usar TopAPPBar
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreen() {
+    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    TopAppBar(
+        title = { Text("") },
+        navigationIcon = {
+            IconButton(onClick = {
+                val intent = Intent(context, LoginActivity::class.java)
+                context.startActivity(intent)
+            }) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+            }
+        }
+    )
 
     Column(
         modifier = Modifier
