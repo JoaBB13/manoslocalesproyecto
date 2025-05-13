@@ -24,7 +24,7 @@ fun RegisterScreen() {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    TopAppBar(
+    TopAppBar(//componente de Material Design para barras superiores
         title = { Text("") },
         navigationIcon = {
             IconButton(onClick = {
@@ -74,7 +74,7 @@ fun RegisterScreen() {
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -86,7 +86,7 @@ fun RegisterScreen() {
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -95,7 +95,7 @@ fun RegisterScreen() {
 
         Button(
             onClick = {
-                // 👉 Redirige a LoginActivity
+                // Redirige a LoginActivity
                 val intent = Intent(context, LoginActivity::class.java)
                 context.startActivity(intent)
             },

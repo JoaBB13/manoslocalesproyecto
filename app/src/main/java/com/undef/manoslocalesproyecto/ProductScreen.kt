@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-data class Producto(
+data class Producto(//modelo de datos de productos
     val id: Int,
     val nombre: String,
     val categoria: String,
@@ -33,20 +33,20 @@ data class Producto(
 @Composable
 fun ProductScreen(
     productos: List<Producto>,
-    onProductClick: (Int) -> Unit,
-    onAlertsClick: () -> Unit,
+    onProductClick: (Int) -> Unit,//callback
+    onAlertsClick: () -> Unit,//callback
     onSettingsClick: () -> Unit,
     onConsultasClick: () -> Unit,
 ) {
     //val sharedViewModel: SharedAppViewModel = viewModel()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val userPreferences = remember { UserPreferences(context) }
+    val userPreferences = remember { UserPreferences(context) }//lee el filtro guardado en DataStore
 
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf("") }//se usa en el buscador
     var buscando by remember { mutableStateOf(false) }
     var menuExpanded by remember { mutableStateOf(false) }
-    var favoritos by remember { mutableStateOf(ProductoFavoritos.favoritos.map { it.id }.toSet()) }
+    var favoritos by remember { mutableStateOf(ProductoFavoritos.favoritos.map { it.id }.toSet()) }//Usa un set para evitar duplicados
     var filtroGuardado by remember { mutableStateOf("todos") }
 
     // Observar el valor de filtro desde DataStore
@@ -56,7 +56,7 @@ fun ProductScreen(
     }
 
     val resultadosBusqueda = productos.filter {
-        val texto = query.lowercase()
+        val texto = query.lowercase()//texto ingresado query y usa lowercase para normalizar
         when (filtroGuardado) {
             "ciudad" -> it.ciudad.lowercase().contains(texto)
             "categoria" -> it.categoria.lowercase().contains(texto)
@@ -89,14 +89,14 @@ fun ProductScreen(
                     .weight(1f)
                     .padding(end = 8.dp),
                 singleLine = true
-            )
+            )//campo de busqueda, actualiza query reactivamente al escribir
 
             Box {
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(Icons.Default.MoreVert, contentDescription = "Menú")
                 }
 
-                DropdownMenu(
+                DropdownMenu( //muestra opciones adicionales al hacer click en el menu
                     expanded = menuExpanded,
                     onDismissRequest = { menuExpanded = false }
                 ) {
@@ -145,14 +145,14 @@ fun ProductScreen(
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
-        LazyColumn {
+        LazyColumn { //renderiza solo los elementos visibles
             val lista = if (buscando) resultadosBusqueda else productos
-            items(lista) { producto ->
+            items(lista) { producto -> //metodo extension para listas reactivas
                 Box(modifier = Modifier.padding(vertical = 8.dp)) {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { onProductClick(producto.id) },
+                            .clickable { onProductClick(producto.id) },//al hacer click, pasa al detalle
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -174,7 +174,7 @@ fun ProductScreen(
                                 }
                                 favoritos = favoritos + producto.id
                             }
-                        },
+                        },//al hacer click, agrega o quita de favoritos
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
@@ -183,7 +183,7 @@ fun ProductScreen(
                             imageVector = if (favoritos.contains(producto.id)) Icons.Filled.Star else Icons.Filled.StarBorder,
                             contentDescription = "Favorito",
                             tint = if (favoritos.contains(producto.id)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-                        )
+                        )//cambia el icono visualmente
                     }
                 }
             }

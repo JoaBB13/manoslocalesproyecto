@@ -18,10 +18,10 @@ import com.undef.manoslocalesproyecto.UserPreferences
 @Composable
 fun SettingsScreen(context: Context, onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
-    val userPreferences = remember { UserPreferences(context) }
+    val userPreferences = remember { UserPreferences(context) }//clase que maneja el almacenamiento en AdataStore
 
     val busquedaPor by userPreferences.busquedaPor.collectAsState(initial = "todos(ciudad,categoria,vendedor)")
-    val tiempoNotificacion by userPreferences.tiempoNotificacion.collectAsState(initial = 60)
+    val tiempoNotificacion by userPreferences.tiempoNotificacion.collectAsState(initial = 60)//collectAsState: Convierte el flujo de datos en un estado observable por Compose.
 
     var busquedaSeleccionada by remember { mutableStateOf(busquedaPor) }
     var tiempoSeleccionado by remember { mutableStateOf(tiempoNotificacion.toString()) }
@@ -44,7 +44,7 @@ fun SettingsScreen(context: Context, onBack: () -> Unit) {
         Text("Preferencias de Búsqueda", style = MaterialTheme.typography.titleLarge)
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("ciudad", "categoria", "vendedor", "Todos(ciudad, categoria, vendedor)").forEach { opcion ->
+            listOf("ciudad", "categoria", "vendedor", "Todos(ciudad, categoria, vendedor)").forEach { opcion ->//selector de filtro de busqueda
                 Button(
                     onClick = {
                         busquedaSeleccionada = opcion
@@ -91,7 +91,7 @@ fun SettingsScreen(context: Context, onBack: () -> Unit) {
         Button(
             onClick = {
                 val minutos = tiempoSeleccionado.toIntOrNull() ?: 60
-                scope.launch {
+                scope.launch {//lanza una corrutina: suspender su ejecucion en un punto especifico y retomarla mas tarde, manteniendo su estado interno
                     userPreferences.setTiempoNotificacion(minutos)
                 }
             },

@@ -14,32 +14,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)//me permite usar TopAPPBar
 @Composable
-fun EnterEmailScreen(onNext: (String) -> Unit) {
-    var email by remember { mutableStateOf("") }
+fun EnterCodeScreen(onNext: () -> Unit) {
+    var code by remember { mutableStateOf("") }
 
     Column(
         Modifier.fillMaxSize().padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Recuperar contraseña", style = MaterialTheme.typography.headlineSmall)
+        Text("Ingresá el código", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
+        OutlinedTextField(value = code,
+            onValueChange = { code = it },
+            label = { Text("Código") },
             modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(16.dp))
-        Button(onClick = { onNext(email) },
-                modifier = Modifier.fillMaxWidth()) {
-            Text("Enviar código")
+        Button(onClick = onNext,
+            modifier = Modifier.fillMaxWidth()) {
+            Text("Verificar")
         }
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun EnterEmailScreenPreview() {
-    EnterEmailScreen(onNext = { /* no hace nada en preview */ })
+fun EnterCodeScreenPreview() {
+    EnterCodeScreen(onNext = { /* Acción de prueba */ })
 }

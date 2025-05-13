@@ -11,12 +11,12 @@ class QuestionsViewModel : ViewModel() {
             data = Uri.parse("mailto:")
         }
         return intent.resolveActivity(context.packageManager) != null
-    }
+    }//verifica si hay una app de correo
 
     fun sendEmail(context: Context, title: String, message: String): Boolean {
         if (!hasEmailApp(context)) return false
 
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {//Intent(Intent.ACTION_SENDTO): Crea un intent implícito para enviar datos a un destinatario (en este caso, correo).
             data = Uri.parse("mailto:desarrollador@ejemplo.com")
             putExtra(Intent.EXTRA_SUBJECT, title)
             putExtra(Intent.EXTRA_TEXT, message)

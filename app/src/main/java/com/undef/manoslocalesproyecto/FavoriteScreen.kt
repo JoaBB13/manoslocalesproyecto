@@ -19,11 +19,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun FavoriteScreen(
-    favoritos: List<Producto>,
+    favoritos: List<Producto>,//Lista de productos favoritos
     onProductClick: (Int) -> Unit
 ) {
     val context = LocalContext.current
-    var actualizacion by remember { mutableStateOf(0) } // fuerza recomposición
+    var actualizacion by remember { mutableStateOf(0) } // Variable de estado que fuerza la actualización de la UI al cambiar
 
     Column(
         modifier = Modifier
@@ -45,23 +45,23 @@ fun FavoriteScreen(
                 text = "Mis Favoritos",
                 style = MaterialTheme.typography.titleLarge
             )
-        }
+        }//Boton de retroceso y titulo centrado
 
         Spacer(modifier = Modifier.height(16.dp))
 
         if (favoritos.isEmpty()) {
             Text("No hay productos favoritos.")
         } else {
-            LazyRow(
+            LazyRow(//Muestra items en scroll horizontal
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(favoritos) { producto ->
+                items(favoritos) { producto ->//renderiza cada item visible
                     Card(
                         modifier = Modifier
                             .width(250.dp)
                             .height(180.dp)
-                            .clickable { onProductClick(producto.id) },
+                            .clickable { onProductClick(producto.id) },//ejecuta onProductClick al tocar la tarjeta
                         elevation = CardDefaults.cardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {

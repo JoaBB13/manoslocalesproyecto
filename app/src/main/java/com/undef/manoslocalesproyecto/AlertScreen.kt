@@ -19,7 +19,7 @@ fun AlertScreen(onBack: () -> Unit) {
     // Obtener productos con alerta activa
     val alertas = ProductoFavoritos.favoritos.filter {
         ProductoFavoritos.tieneAlerta(it.id)
-    }
+    }//Obtiene solo los favoritos que tienen alertas activas usando tieneAlerta() del singleton ProductoFavoritos
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -41,7 +41,7 @@ fun AlertScreen(onBack: () -> Unit) {
             Text("No hay alertas activas.")
         } else {
             LazyColumn {
-                items(alertas) { producto ->
+                items(alertas) { producto ->//transforma la lista alertas en componentes UI
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -59,7 +59,7 @@ fun AlertScreen(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
                 ProductoFavoritos.desactivarTodasLasAlertas()
-                actualizacion++ // Fuerza recomposición
+                actualizacion++ // Fuerza recomposición, asegura que UI(Interfaz de usuario) se actualice
             }) {
                 Text("Desactivar todas las alertas")
             }

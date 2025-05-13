@@ -28,7 +28,7 @@ fun QuestionsScreen(
 ) {
     //val sharedViewModel: SharedAppViewModel = viewModel()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()//corrutina
     val snackbarHostState = remember { SnackbarHostState() }
 
     var titulo by remember { mutableStateOf("") }
@@ -45,7 +45,7 @@ fun QuestionsScreen(
                 }
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) }//muestra mensajes temporales
     ) { padding ->
         Column(
             modifier = Modifier
@@ -82,12 +82,12 @@ fun QuestionsScreen(
                         return@Button
                     }
 
-                    scope.launch {
+                    scope.launch {//ejecuta en una corrutina
                         try {
-                            if (viewModel.sendEmail(context, titulo, mensaje)) {
+                            if (viewModel.sendEmail(context, titulo, mensaje)) {//devuelve true si se abrio la app de correo
                                 snackbarHostState.showSnackbar("Correo enviado")
                             } else {
-                                snackbarHostState.showSnackbar("No hay app de correo")
+                                snackbarHostState.showSnackbar("No hay app de correo")//devuelve false
                             }
                         } catch (e: Exception) {
                             snackbarHostState.showSnackbar("Error: ${e.localizedMessage}")

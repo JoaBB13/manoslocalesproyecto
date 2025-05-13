@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 fun DetailProductScreen(
     productId: Int,
     productos: List<Producto>,
-    onBack: () -> Unit
+    onBack: () -> Unit//callback para volver atras
 ) {
-    val producto = productos.find { it.id == productId }
+    val producto = productos.find { it.id == productId }//usa find para localiza el producto con el ID especifico, si no lo encuentra muestra erro
 
     if (producto == null) {
         Column(
@@ -37,10 +37,10 @@ fun DetailProductScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Detalle del Producto", style = MaterialTheme.typography.headlineMedium)
+        Text("Detalle del Producto", style = MaterialTheme.typography.headlineMedium)//estilo headlineMedium del tema Material3 para jerarquía visual.
         Spacer(modifier = Modifier.height(16.dp))
 
-        Card(
+        Card(//componente visual para agrupar contenido relacionado
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {

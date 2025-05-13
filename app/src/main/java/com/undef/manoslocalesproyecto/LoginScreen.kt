@@ -19,29 +19,29 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 
 fun LoginScreen() {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }//almacenan lo que el usario escribe, remember:guarda el estado duranterecomoposiciones(rotar pantalla)
+    var password by remember { mutableStateOf("") }//mustableStateOf:Hace que compose redibuje la UI cuando cambian estos valores
 
-    Column(
+    Column(//organiza los elementos verticalmente
         modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()//ocupa toda la pantalla
+            .padding(24.dp),//con margenes de 24dp
+        verticalArrangement = Arrangement.Center,//centra los elementos verticalmente
+        horizontalAlignment = Alignment.CenterHorizontally//centra los lementos horizontalmente
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo de la app",
+            contentDescription = "Logo de la app",//texto para lectores de pantalla
             modifier = Modifier
-                .size(140.dp) // Ajustá el tamaño según tu imagen
+                .size(140.dp)
                 .padding(bottom = 24.dp)
         )
 
-        OutlinedTextField(
+        OutlinedTextField(//campo de texto
             value = email,
             onValueChange = { email = it },
             label = { Text("Correo electrónico") },
-            singleLine = true,
+            singleLine = true,//evita saltos de linea
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -52,29 +52,29 @@ fun LoginScreen() {
             onValueChange = { password = it },
             label = { Text("Contraseña") },
             singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = PasswordVisualTransformation(),//muestra la contraseña como puntos
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)//muestra teclado optimizado para contraseñas
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val context = LocalContext.current
+        val context = LocalContext.current//obtienen el contexto de android para iniciar actividades
 
         Button(
             onClick = {
-                // Aquí podrías validar credenciales si hicieras login real
+                // Aquí se van avalidar credenciales cuando se haga login real
 
                 // Navegar a ProductActivity
                 val intent = Intent(context, ProductActivity::class.java)
                 context.startActivity(intent)
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()//boton ocupa todo el ancho disponible
         ) {
             Text("Ingresar")
         }
 
-        TextButton(
+        TextButton(//boton sin fondo
             onClick = {
                 val intent = Intent(context, RegisterActivity::class.java)
                 context.startActivity(intent)
