@@ -166,13 +166,15 @@ fun ProductScreen(
                     IconButton(
                         onClick = {
                             if (favoritos.contains(producto.id)) {
+                                //remover de favoritos
                                 ProductoFavoritos.favoritos.removeAll { it.id == producto.id }
                                 favoritos = favoritos - producto.id
                             } else {
+                                //agregar a favoritos
                                 if (ProductoFavoritos.favoritos.none { it.id == producto.id }) {
                                     ProductoFavoritos.favoritos.add(producto)
                                 }
-                                favoritos = favoritos + producto.id
+                                favoritos = favoritos + producto.id//actualzia estado local de favoritos
                             }
                         },//al hacer click, agrega o quita de favoritos
                         modifier = Modifier
