@@ -1,5 +1,5 @@
 package com.undef.manoslocalesproyecto
-
+//Usamos navegacion por rutas,
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +17,7 @@ class FavoriteActivity : ComponentActivity() {
         setContent {
             ManoslocalesproyectoTheme {
                 val navController = rememberNavController()
+                //Generamos un nav controller
 
                 NavHost(navController = navController, startDestination = "favorites") {
                     composable("favorites") {
