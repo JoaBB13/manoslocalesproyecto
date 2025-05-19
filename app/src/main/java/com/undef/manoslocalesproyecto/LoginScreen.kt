@@ -1,5 +1,6 @@
 package com.undef.manoslocalesproyecto
-
+// Para navegar entre activitys, usamos intentn y lanzamos la activity agregada en el manifest.
+//Aprovechando que android guarda cada activity en una pila, cuando presionamos atras, la pantalla anterior vuelve automaticamente
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -76,6 +77,7 @@ fun LoginScreen() {
 
         TextButton(//boton sin fondo
             onClick = {
+                //Genereamos intent para navegar a register activity
                 val intent = Intent(context, RegisterActivity::class.java)
                 context.startActivity(intent)
             }
@@ -85,6 +87,7 @@ fun LoginScreen() {
 
         TextButton(
             onClick = {
+                //Generamos intent para navegar a passwortd activity
                 val intent = Intent(context, PasswordActivity::class.java)
                 context.startActivity(intent)
             }
