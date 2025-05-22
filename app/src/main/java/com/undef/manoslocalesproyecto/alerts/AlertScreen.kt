@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.alerts
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.undef.manoslocalesproyecto.favorites.ProductoFavoritos
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

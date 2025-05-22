@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.favorites
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
@@ -15,7 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.clickable
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.undef.manoslocalesproyecto.product.ProductActivity
+import com.undef.manoslocalesproyecto.product.Producto
 
 @Composable
 fun FavoriteScreen(

@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.product
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

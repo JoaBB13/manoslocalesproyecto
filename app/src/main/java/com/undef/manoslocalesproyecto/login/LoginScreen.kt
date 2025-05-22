@@ -1,7 +1,6 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.login
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,6 +13,9 @@ import androidx.compose.ui.res.painterResource
 import com.undef.manoslocalesproyecto.R
 import android.content.Intent
 import androidx.compose.ui.platform.LocalContext
+import com.undef.manoslocalesproyecto.password.PasswordActivity
+import com.undef.manoslocalesproyecto.product.ProductActivity
+import com.undef.manoslocalesproyecto.register.RegisterActivity
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

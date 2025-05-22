@@ -1,4 +1,6 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.favorites
+
+import com.undef.manoslocalesproyecto.product.Producto
 
 object ProductoFavoritos {//crea una instancia global en toda la app
     val favoritos = mutableListOf<Producto>()//lista modificable de objetos Producto

@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.questions
 
 import android.content.Context
 import android.content.Intent
@@ -6,25 +6,28 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 
 class QuestionsViewModel : ViewModel() {
+
     fun hasEmailApp(context: Context): Boolean {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
+            data = Uri.parse("mailto:") // ✅ CORREGIDO
         }
         return intent.resolveActivity(context.packageManager) != null
-    }//verifica si hay una app de correo
+    }
 
     fun sendEmail(context: Context, title: String, message: String): Boolean {
         if (!hasEmailApp(context)) return false
 
-        val intent = Intent(Intent.ACTION_SENDTO).apply {//Intent(Intent.ACTION_SENDTO): Crea un intent implícito para enviar datos a un destinatario (en este caso, correo).
-            data = Uri.parse("mailto:desarrollador@ejemplo.com")
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:desarrollador@ejemplo.com") // ✅ CORREGIDO
             putExtra(Intent.EXTRA_SUBJECT, title)
             putExtra(Intent.EXTRA_TEXT, message)
         }
+
         context.startActivity(intent)
         return true
     }
 }
+
 
 /*¿Qué es ViewModel?
 Es una clase diseñada para:

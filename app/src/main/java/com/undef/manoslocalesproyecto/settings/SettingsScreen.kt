@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.settings
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
@@ -11,8 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import androidx.compose.ui.tooling.preview.Preview
-import com.undef.manoslocalesproyecto.UserPreferences
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

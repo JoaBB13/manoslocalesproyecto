@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.settings
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 

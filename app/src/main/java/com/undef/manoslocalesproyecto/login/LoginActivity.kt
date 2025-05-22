@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.login
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

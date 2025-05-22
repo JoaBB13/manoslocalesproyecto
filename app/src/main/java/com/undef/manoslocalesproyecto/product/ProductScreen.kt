@@ -1,4 +1,4 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.product
 
 import android.content.Intent
 import androidx.compose.foundation.clickable
@@ -15,9 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.undef.manoslocalesproyecto.favorites.FavoriteActivity
+import com.undef.manoslocalesproyecto.favorites.ProductoFavoritos
+import com.undef.manoslocalesproyecto.settings.UserPreferences
 
 data class Producto(//modelo de datos de productos
     val id: Int,
@@ -37,6 +37,7 @@ fun ProductScreen(
     onAlertsClick: () -> Unit,//callback
     onSettingsClick: () -> Unit,
     onConsultasClick: () -> Unit,
+    onPerfilClick: () -> Unit
 ) {
     //val sharedViewModel: SharedAppViewModel = viewModel()
     val context = LocalContext.current
@@ -104,7 +105,7 @@ fun ProductScreen(
                         text = { Text("Mi Perfil") },
                         onClick = {
                             menuExpanded = false
-                            context.startActivity(Intent(context, PerfilActivity::class.java))
+                            onPerfilClick()
                         }
                     )
                     DropdownMenuItem(

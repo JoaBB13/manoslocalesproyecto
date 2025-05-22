@@ -1,7 +1,6 @@
-package com.undef.manoslocalesproyecto
+package com.undef.manoslocalesproyecto.register
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +12,7 @@ import android.content.Intent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.platform.LocalContext
+import com.undef.manoslocalesproyecto.login.LoginActivity
 
 @OptIn(ExperimentalMaterial3Api::class)//me permite usar TopAPPBar
 @Preview(showBackground = true, showSystemUi = true)
