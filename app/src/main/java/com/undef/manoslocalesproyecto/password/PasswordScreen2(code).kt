@@ -6,7 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EnterCodeScreen(onNext: () -> Unit) {
@@ -19,20 +18,17 @@ fun EnterCodeScreen(onNext: () -> Unit) {
     ) {
         Text("Ingresá el código", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = code,
+        OutlinedTextField(
+            value = code,
             onValueChange = { code = it },
             label = { Text("Código") },
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth()
+        )
         Spacer(Modifier.height(16.dp))
-        Button(onClick = onNext,
-            modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = onNext, modifier = Modifier.fillMaxWidth()) {
             Text("Verificar")
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun EnterCodeScreenPreview() {
-    EnterCodeScreen(onNext = { /* Acción de prueba */ })
-}
+

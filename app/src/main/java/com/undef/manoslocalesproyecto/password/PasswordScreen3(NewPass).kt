@@ -7,12 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
+import com.undef.manoslocalesproyecto.UserViewModel
 
 @Composable
-fun SetNewPasswordScreen(onPasswordChanged: () -> Unit) {
+fun SetNewPasswordScreen(email: String, onPasswordChanged: () -> Unit, viewModel: UserViewModel) {
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
 
     Column(
         Modifier.fillMaxSize().padding(24.dp),
@@ -21,31 +22,51 @@ fun SetNewPasswordScreen(onPasswordChanged: () -> Unit) {
     ) {
         Text("Nueva contraseña", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(16.dp))
+
         OutlinedTextField(
             value = newPassword,
-            onValueChange = { newPassword = it },
+            onValueChange = {
+                newPassword = it
+                error = null
+            },
             label = { Text("Nueva contraseña") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(Modifier.height(16.dp))
+
         OutlinedTextField(
             value = confirmPassword,
-            onValueChange = { confirmPassword = it },
+            onValueChange = {
+                confirmPassword = it
+                error = null
+            },
             label = { Text("Confirmar contraseña") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
+
+        if (error != null) {
+            Text(text = error!!, color = MaterialTheme.colorScheme.error)
+        }
+
         Spacer(Modifier.height(16.dp))
-        Button(onClick = onPasswordChanged,
-            modifier = Modifier.fillMaxWidth()) {
+
+        Button(
+            onClick = {
+                if (newPassword != confirmPassword) {
+                    error = "Las contraseñas no coinciden"
+                } else {
+                    viewModel.changePassword(email, newPassword)
+                    onPasswordChanged()
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Guardar")
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun SetNewPasswordScreenPreview() {
-    SetNewPasswordScreen(onPasswordChanged = { /* Acción simulada */ })
-}
+

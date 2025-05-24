@@ -6,12 +6,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.undef.manoslocalesproyecto.UserViewModel
+import com.undef.manoslocalesproyecto.UserRepository
+import com.undef.manoslocalesproyecto.UserPreferencesLogin
 
-@OptIn(ExperimentalMaterial3Api::class)//me permite usar TopAPPBar
 @Composable
-fun EnterEmailScreen(onNext: (String) -> Unit) {
+fun EnterEmailScreen(onNext: (String) -> Unit, viewModel: UserViewModel) {
     var email by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
 
     Column(
         Modifier.fillMaxSize().padding(24.dp),
@@ -20,20 +24,40 @@ fun EnterEmailScreen(onNext: (String) -> Unit) {
     ) {
         Text("Recuperar contraseña", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = email,
-            onValueChange = { email = it },
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+                error = null
+            },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth())
+            modifier = Modifier.fillMaxWidth(),
+            isError = error != null
+        )
+
+        if (error != null) {
+            Text(text = error!!, color = MaterialTheme.colorScheme.error)
+        }
+
         Spacer(Modifier.height(16.dp))
-        Button(onClick = { onNext(email) },
-                modifier = Modifier.fillMaxWidth()) {
+
+        Button(
+            onClick = {
+                viewModel.checkUserExists(email) { exists ->
+                    if (exists) {
+                        onNext(email)
+                    } else {
+                        error = "No se encontró una cuenta con este correo"
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Enviar código")
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun EnterEmailScreenPreview() {
-    EnterEmailScreen(onNext = { /* no hace nada en preview */ })
-}
+
+

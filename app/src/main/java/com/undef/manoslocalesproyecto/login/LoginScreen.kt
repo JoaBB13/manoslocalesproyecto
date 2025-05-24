@@ -1,49 +1,61 @@
 package com.undef.manoslocalesproyecto.login
 
+import android.content.Intent
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.*
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
-import com.undef.manoslocalesproyecto.R
-import android.content.Intent
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
+import com.undef.manoslocalesproyecto.R
+import com.undef.manoslocalesproyecto.UserViewModel
 import com.undef.manoslocalesproyecto.password.PasswordActivity
 import com.undef.manoslocalesproyecto.product.ProductActivity
 import com.undef.manoslocalesproyecto.register.RegisterActivity
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
+fun LoginScreen(viewModel: UserViewModel) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-fun LoginScreen() {
-    var email by remember { mutableStateOf("") }//almacenan lo que el usario escribe, remember:guarda el estado duranterecomoposiciones(rotar pantalla)
-    var password by remember { mutableStateOf("") }//mustableStateOf:Hace que compose redibuje la UI cuando cambian estos valores
+    val context = LocalContext.current
+    val loginState by viewModel.loginState.collectAsState()
 
-    Column(//organiza los elementos verticalmente
+    // Navegar si el login fue exitoso
+    LaunchedEffect(loginState) {
+        if (loginState == true) {
+            val intent = Intent(context, ProductActivity::class.java)
+            context.startActivity(intent)
+        } else if (loginState == false) {
+            Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    Column(
         modifier = Modifier
-            .fillMaxSize()//ocupa toda la pantalla
-            .padding(24.dp),//con margenes de 24dp
-        verticalArrangement = Arrangement.Center,//centra los elementos verticalmente
-        horizontalAlignment = Alignment.CenterHorizontally//centra los lementos horizontalmente
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo de la app",//texto para lectores de pantalla
+            contentDescription = "Logo de la app",
             modifier = Modifier
                 .size(140.dp)
                 .padding(bottom = 24.dp)
         )
 
-        OutlinedTextField(//campo de texto
+        OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Correo electrónico") },
-            singleLine = true,//evita saltos de linea
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -54,35 +66,28 @@ fun LoginScreen() {
             onValueChange = { password = it },
             label = { Text("Contraseña") },
             singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),//muestra la contraseña como puntos
-            modifier = Modifier.fillMaxWidth(),
-            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)//muestra teclado optimizado para contraseñas
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val context = LocalContext.current//obtienen el contexto de android para iniciar actividades
-
         Button(
             onClick = {
-                // Aquí se van avalidar credenciales cuando se haga login real
-
-                // Navegar a ProductActivity
-                val intent = Intent(context, ProductActivity::class.java)
-                context.startActivity(intent)
+                viewModel.login(email.trim(), password.trim())
             },
-            modifier = Modifier.fillMaxWidth()//boton ocupa todo el ancho disponible
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ingresar")
         }
 
-        TextButton(//boton sin fondo
+        TextButton(
             onClick = {
                 val intent = Intent(context, RegisterActivity::class.java)
                 context.startActivity(intent)
             }
         ) {
-            Text("¿No tenés cuenta? Registrate aqui")
+            Text("¿No tenés cuenta? Registrate aquí")
         }
 
         TextButton(
@@ -91,7 +96,7 @@ fun LoginScreen() {
                 context.startActivity(intent)
             }
         ) {
-            Text("¿Olvidaste tu contraseña? Cambiala aqui")
+            Text("¿Olvidaste tu contraseña? Cambiala aquí")
         }
     }
 }
